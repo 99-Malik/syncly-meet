@@ -1,26 +1,71 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f5f6f6;
   --foreground: #171717;
+  --primary: #3eace2;
+  --font-degular: "Degular Demo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-hyperspace: "FONTSPRING DEMO - Hyperspace Race", "Courier New", Courier, monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --font-degular: var(--font-degular);
+  --font-hyperspace: var(--font-hyperspace);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Font face declarations */
+@font-face {
+  font-family: "Degular Demo";
+  src: url("./fonts/DegularDemo-Regular.otf") format("opentype");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "FONTSPRING DEMO - Hyperspace Race";
+  src: url("./fonts/Fontspring-DEMO-hyperspacerace-regular.otf") format("opentype");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "FONTSPRING DEMO - Hyperspace Race";
+  src: url("./fonts/Fontspring-DEMO-hyperspacerace-bold.otf") format("opentype");
+  font-display: swap;
+  font-weight: 700;
+  font-style: normal;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-degular);
+}
+
+/* Ensure SVGs maintain aspect ratio and don't stretch */
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Input field glow effect */
+.input-glow:focus {
+  border-color: #3eace2 !important;
+  box-shadow: 0 0 0 4px rgba(62, 172, 226, 0.2), 0 0 0 2px rgba(62, 172, 226, 0.1) !important;
+  outline: none !important;
+}
+
+/* Placeholder text styling */
+.input-glow::placeholder {
+  font-family: "Degular Demo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.005em;
 }
