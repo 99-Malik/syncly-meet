@@ -1,6 +1,13 @@
-export const LogoIcon = () => {
+import React from "react";
+
+interface LogoIconProps {
+  width?: number | string;
+  height?: number | string;
+}
+
+export const LogoIcon: React.FC<LogoIconProps> = ({ width = 50, height = 64 }) => {
   return (
-    <svg width="50" height="64" viewBox="0 0 50 64" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+    <svg width={width} height={height} viewBox="0 0 50 64" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
       <rect width="49.0242" height="63.1057" fill="url(#pattern0_122_12766)" />
       <defs>
         <pattern id="pattern0_122_12766" patternContentUnits="objectBoundingBox" width="1" height="1">
