@@ -12,9 +12,9 @@ interface MenuItemProps {
   href: string;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ icon, label, href }) => {
+const MenuItem: React.FC<MenuItemProps & { matchPrefix?: boolean }> = ({ icon, label, href, matchPrefix = false }) => {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = matchPrefix ? pathname.startsWith(href) : pathname === href;
   return (
     <Link
       href={href}
@@ -90,6 +90,7 @@ export const SideBar: React.FC = () => {
               }
               label="Dashboard"
               href="/dashboard"
+              matchPrefix={true}
             />
             <MenuItem
               icon={
@@ -111,6 +112,7 @@ export const SideBar: React.FC = () => {
               }
               label="My Meetings"
               href="/meetings"
+              matchPrefix={true}
             />
             <MenuItem
               icon={

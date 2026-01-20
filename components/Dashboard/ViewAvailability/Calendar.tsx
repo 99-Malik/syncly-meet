@@ -6,12 +6,14 @@ interface CalendarProps {
     selectedDate?: Date;
     onDateSelect?: (date: Date) => void;
     datesWithEvents?: number[];
+    subtitle?: string;
 }
 
 export const Calendar: React.FC<CalendarProps> = ({
     selectedDate = new Date(),
     onDateSelect,
     datesWithEvents = [],
+    subtitle = "See Schedule",
 }) => {
     const [currentMonth, setCurrentMonth] = useState(selectedDate.getMonth());
     const [currentYear, setCurrentYear] = useState(selectedDate.getFullYear());
@@ -124,7 +126,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                         lineHeight: '20px',
                         letterSpacing: '0.005em'
                     }}>
-                        See Schedule
+                        {subtitle}
                     </p>
                 </div>
                 <button className="text-[#171717] hover:text-[#686F83] transition-colors p-1">
