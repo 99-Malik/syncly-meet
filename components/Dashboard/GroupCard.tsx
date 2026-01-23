@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { GroupMenu } from "./GroupMenu";
+import { EditGroupModal } from "../Groups/EditGroupModal";
 
 interface GroupCardProps {
   id: string;
@@ -13,6 +14,7 @@ interface GroupCardProps {
   memberAvatars: string[];
   bgColor?: string;
   extraMemberCount?: number;
+  source?: "groups" | "dashboard";
 }
 
 export const GroupCard: React.FC<GroupCardProps> = ({
@@ -24,9 +26,11 @@ export const GroupCard: React.FC<GroupCardProps> = ({
   memberAvatars,
   bgColor = "#FEF9E7",
   extraMemberCount,
+  source = "dashboard",
 }) => {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Calculate extra members - either from prop or from array length
@@ -91,7 +95,7 @@ export const GroupCard: React.FC<GroupCardProps> = ({
               <GroupMenu
                 onEdit={() => {
                   setShowMenu(false);
-                  // Handle edit action
+                  setShowEditModal(true);
                 }}
                 onDelete={() => {
                   setShowMenu(false);
@@ -188,7 +192,7 @@ export const GroupCard: React.FC<GroupCardProps> = ({
 
       {/* View Availability Button */}
       <button 
-        onClick={() => router.push(`/dashboard/view-availability?id=${id}`)}
+        onClick={() => router.push(`/dashboard/view-availability?id=${id}&source=${source}`)}
         className="w-full bg-[#3eace2] text-white py-3.5 rounded-2xl hover:bg-[#35a0d4] transition-colors font-hyperspace" 
         style={{
           fontWeight: 600,
@@ -200,6 +204,26 @@ export const GroupCard: React.FC<GroupCardProps> = ({
       >
         View Availability
       </button>
+
+      {/* Edit Group Modal */}
+      <EditGroupModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        onSaveChanges={(data) => {
+          console.log("Group updated:", data);
+          setShowEditModal(false);
+          // Handle group update logic here
+        }}
+        initialData={{
+          title: name,
+          description: description,
+          members: memberAvatars.map((avatar, index) => ({
+            id: `member-${index}`,
+            name: `Member ${index + 1}`,
+            avatar: avatar
+          }))
+        }}
+      />
     </div>
   );
 };

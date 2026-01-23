@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { SideBar } from "../SideBar/SideBar";
 import { NavBar } from "../NavBar/NavBar";
@@ -17,7 +17,9 @@ export default function DashboardLayout({
     <div className={`${isAiChatPage ? "h-screen overflow-hidden" : "min-h-screen"} bg-[#f5f6f6]  flex p-4`}>
       {/* Sidebar - fixed width, grayish background */}
       <div className="w-[280px] flex-shrink-0 h-full overflow-y-auto scroll-hidden ">
-        <SideBar />
+        <Suspense fallback={<div className="w-full h-full bg-white rounded-2xl border border-gray-200" />}>
+          <SideBar />
+        </Suspense>
       </div>
 
       {/* Main Content Area - takes remaining width with bluish gradient */}

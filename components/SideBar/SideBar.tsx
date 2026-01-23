@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { BottomIcons } from "../Svgs/SideBar/Icons";
 import { LogoIcon } from "../Svgs/Sign-In/Icons";
+import { LogoutModal } from "./LogoutModal";
 
 interface MenuItemProps {
   icon: React.ReactNode;
@@ -12,9 +13,25 @@ interface MenuItemProps {
   href: string;
 }
 
-const MenuItem: React.FC<MenuItemProps & { matchPrefix?: boolean }> = ({ icon, label, href, matchPrefix = false }) => {
+const MenuItem: React.FC<MenuItemProps & { matchPrefix?: boolean; sourceCheck?: string }> = ({ icon, label, href, matchPrefix = false, sourceCheck }) => {
   const pathname = usePathname();
-  const isActive = matchPrefix ? pathname.startsWith(href) : pathname === href;
+  const searchParams = useSearchParams();
+  const source = searchParams.get("source");
+  
+  let isActive: boolean;
+  
+  // If source parameter exists and this item has a sourceCheck
+  if (source && sourceCheck) {
+    // Only active if source matches this item's sourceCheck
+    isActive = source === sourceCheck;
+  } else {
+    // No source parameter or this item doesn't have sourceCheck, use normal pathname matching
+    if (matchPrefix) {
+      isActive = pathname.startsWith(href);
+    } else {
+      isActive = pathname === href;
+    }
+  }
   return (
     <Link
       href={href}
@@ -35,6 +52,8 @@ const MenuItem: React.FC<MenuItemProps & { matchPrefix?: boolean }> = ({ icon, l
 };
 
 export const SideBar: React.FC = () => {
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
   return (
     <div
       className="w-full flex flex-col border rounded-2xl border-gray-200 relative bg-white"
@@ -91,6 +110,7 @@ export const SideBar: React.FC = () => {
               label="Dashboard"
               href="/dashboard"
               matchPrefix={true}
+              sourceCheck="dashboard"
             />
             <MenuItem
               icon={
@@ -123,6 +143,7 @@ export const SideBar: React.FC = () => {
               }
               label="Availability"
               href="/availability"
+              matchPrefix={true}
             />
             <MenuItem
               icon={
@@ -140,6 +161,8 @@ export const SideBar: React.FC = () => {
               }
               label="Groups"
               href="/groups"
+              matchPrefix={true}
+              sourceCheck="groups"
             />
           </div>
           
@@ -173,6 +196,8 @@ export const SideBar: React.FC = () => {
               }
               label="Integration"
               href="/integration"
+              matchPrefix={true}
+              sourceCheck="integration"
             />
             <MenuItem
               icon={
@@ -203,7 +228,10 @@ export const SideBar: React.FC = () => {
 
       {/* Logout Button */}
       <div className="p-4">
-        <button className="w-full flex items-center gap-3 px-4 py-3 bg-[#fee2e2] text-[#E51B1B] rounded-2xl transition-colors">
+        <button 
+          onClick={() => setShowLogoutModal(true)}
+          className="w-full flex items-center gap-3 px-4 py-3 bg-[#fee2e2] text-[#E51B1B] rounded-2xl transition-colors"
+        >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M5 11H13V13H5V16L0 12L5 8V11ZM4 18H6.708C7.86269 19.0183 9.28669 19.6819 10.8091 19.9109C12.3316 20.14 13.8878 19.9249 15.291 19.2915C16.6942 18.6581 17.8849 17.6332 18.7201 16.3398C19.5553 15.0465 19.9995 13.5396 19.9995 12C19.9995 10.4604 19.5553 8.95354 18.7201 7.66019C17.8849 6.36683 16.6942 5.34194 15.291 4.7085C13.8878 4.07506 12.3316 3.85998 10.8091 4.08906C9.28669 4.31815 7.86269 4.98167 6.708 6H4C4.93066 4.75718 6.13833 3.74851 7.52707 3.05414C8.91581 2.35978 10.4473 1.99884 12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22C10.4473 22.0012 8.91581 21.6402 7.52707 20.9459C6.13833 20.2515 4.93066 19.2428 4 18Z" fill="#E51B1B" />
           </svg>
@@ -215,6 +243,18 @@ export const SideBar: React.FC = () => {
           }}>Logout</span>
         </button>
       </div>
+
+      {/* Logout Modal */}
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onCancel={() => setShowLogoutModal(false)}
+        onConfirm={() => {
+          // Handle logout here
+          console.log("User logged out");
+          setShowLogoutModal(false);
+        }}
+      />
     </div>
   );
 };

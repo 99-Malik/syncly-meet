@@ -1,15 +1,37 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import DashboardLayout from '@/components/Layout/layout';
 import { Header } from '@/components/Dashboard/Header';
 import { Calendar } from './Calendar';
 import { Members } from './Members';
 import { AvailableSlots } from './AvailableSlots';
+import { ScheduleMeetingModal } from '@/components/Meetings/ScheduleMeetingModal';
+import { ScheduleMeetingSuccessModal } from '@/components/Meetings/ScheduleMeetingSuccessModal';
+
+interface Member {
+    id: string;
+    name: string;
+    avatar?: string;
+}
 
 const ViewAvailabilityHome = () => {
     // Sample data
     const datesWithEvents = [1, 2, 10, 17, 18, 19, 23];
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const [selectedTime, setSelectedTime] = useState<string>("");
+    
+    // State for success modal data
+    const [scheduledMeetingData, setScheduledMeetingData] = useState({
+        title: "",
+        dateTime: "",
+        description: "",
+        attendeeCount: 0,
+        memberAvatars: [] as string[],
+        extraMembers: undefined as number | undefined,
+    });
     
     const members = [
         {
@@ -87,6 +109,7 @@ const ViewAvailabilityHome = () => {
     ];
 
     const handleDateSelect = (date: Date) => {
+        setSelectedDate(date);
         console.log("Selected date:", date);
     };
 
@@ -95,7 +118,72 @@ const ViewAvailabilityHome = () => {
     };
 
     const handleSlotSelect = (slot: string) => {
+        setSelectedTime(slot);
+        setIsModalOpen(true);
         console.log("Selected slot:", slot);
+    };
+
+    // Format date as "24 jun"
+    const formatDateForDisplay = (date: Date): string => {
+        const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        const day = date.getDate();
+        const month = months[date.getMonth()];
+        return `${day} ${month}`;
+    };
+
+    // Calculate end time (assuming 1 hour duration)
+    const calculateEndTime = (startTime: string): string => {
+        const [timePart, period] = startTime.split(' ');
+        let [hours, minutes] = timePart.split(':').map(Number);
+
+        if (period === 'PM' && hours !== 12) {
+            hours += 12;
+        } else if (period === 'AM' && hours === 12) {
+            hours = 0;
+        }
+
+        // Add 1 hour
+        hours = (hours + 1) % 24;
+        const endPeriod = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours === 0 ? 12 : hours;
+
+        return `${hours}:${minutes.toString().padStart(2, '0')} ${endPeriod}`;
+    };
+
+    const handleScheduleMeeting = (data: {
+        date: Date;
+        time: string;
+        title: string;
+        members: Member[];
+    }) => {
+        // Format date and time
+        const dateStr = formatDateForDisplay(data.date);
+        const endTime = calculateEndTime(data.time);
+        const dateTimeStr = `${dateStr} ${data.time.toLowerCase()} - ${endTime}`;
+
+        // Get member avatars (limit to 3 for display, calculate extra)
+        const avatars = data.members
+            .map(member => member.avatar || "")
+            .filter(avatar => avatar !== "");
+        
+        const displayAvatars = avatars.slice(0, 3);
+        const extraMembers = avatars.length > 3 ? avatars.length - 3 : undefined;
+
+        // Set success modal data
+        setScheduledMeetingData({
+            title: data.title || "Meeting",
+            dateTime: dateTimeStr,
+            description: data.title || "Meeting",
+            attendeeCount: data.members.length,
+            memberAvatars: displayAvatars,
+            extraMembers: extraMembers,
+        });
+
+        // Close schedule modal and open success modal
+        setIsModalOpen(false);
+        setIsSuccessModalOpen(true);
+        console.log("Meeting scheduled:", data);
     };
 
     return (
@@ -109,7 +197,7 @@ const ViewAvailabilityHome = () => {
                 {/* Calendar Column */}
                 <div className="lg:col-span-1">
                     <Calendar
-                        selectedDate={new Date()}
+                        selectedDate={selectedDate}
                         onDateSelect={handleDateSelect}
                         datesWithEvents={datesWithEvents}
                     />
@@ -130,6 +218,27 @@ const ViewAvailabilityHome = () => {
                     />
                 </div>
             </div>
+
+            {/* Schedule Meeting Modal */}
+            <ScheduleMeetingModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                selectedDate={selectedDate}
+                selectedTime={selectedTime}
+                onScheduleMeeting={handleScheduleMeeting}
+            />
+
+            {/* Schedule Meeting Success Modal */}
+            <ScheduleMeetingSuccessModal
+                isOpen={isSuccessModalOpen}
+                onClose={() => setIsSuccessModalOpen(false)}
+                meetingTitle={scheduledMeetingData.title}
+                meetingDateTime={scheduledMeetingData.dateTime}
+                meetingDescription={scheduledMeetingData.description}
+                attendeeCount={scheduledMeetingData.attendeeCount}
+                memberAvatars={scheduledMeetingData.memberAvatars}
+                extraMembers={scheduledMeetingData.extraMembers}
+            />
         </DashboardLayout>
     );
 };

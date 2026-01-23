@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Calendar } from "@/components/Dashboard/ViewAvailability/Calendar";
 
 interface DatePickerProps {
@@ -11,6 +12,7 @@ interface DatePickerProps {
 
 export const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, label = "Date" }) => {
     const [showCalendar, setShowCalendar] = useState(false);
+    const [calendarPosition, setCalendarPosition] = useState({ top: 0, left: 0, width: 0 });
     const datePickerRef = useRef<HTMLDivElement>(null);
     const dateInputRef = useRef<HTMLDivElement>(null);
 
@@ -33,10 +35,33 @@ export const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, label =
         setShowCalendar(false);
     };
 
+    // Calculate calendar position when opening
+    useEffect(() => {
+        if (showCalendar && dateInputRef.current) {
+            const rect = dateInputRef.current.getBoundingClientRect();
+            const calendarHeight = 350; // Approximate calendar height
+            const spaceAbove = rect.top;
+            const spaceBelow = window.innerHeight - rect.bottom;
+            
+            // Position below if not enough space above, otherwise above
+            const positionBelow = spaceAbove < calendarHeight && spaceBelow > calendarHeight;
+            
+            setCalendarPosition({
+                top: positionBelow ? rect.bottom + 8 : rect.top - calendarHeight - 8,
+                left: rect.left,
+                width: rect.width
+            });
+        }
+    }, [showCalendar]);
+
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
-                setShowCalendar(false);
+                // Check if click is outside the calendar portal
+                const target = event.target as HTMLElement;
+                if (!target.closest('[data-calendar-portal]')) {
+                    setShowCalendar(false);
+                }
             }
         };
 
@@ -51,7 +76,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, label =
 
     return (
         <div className="relative" ref={datePickerRef}>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-[#171717] font-degular mb-2" style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                lineHeight: '20px'
+            }}>
                 {label}
             </label>
             <div className="relative" ref={dateInputRef}>
@@ -60,7 +89,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, label =
                     value={dateDisplay}
                     readOnly
                     onClick={() => setShowCalendar(!showCalendar)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-[#686F83] pr-12 focus:outline-none focus:ring-2 focus:ring-[#3eace2] transition-all cursor-pointer"
+                    className="w-full h-[48px] px-4 bg-[#F3F4F6] border-0 rounded-xl text-[#171717] pr-12 font-degular focus:outline-none focus:ring-2 focus:ring-[#3EACE2] transition-all cursor-pointer"
+                    style={{
+                        fontSize: '16px',
+                        fontWeight: 400,
+                        lineHeight: '24px'
+                    }}
                 />
                 <button 
                     type="button"
@@ -72,17 +106,24 @@ export const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, label =
                     </svg>
                 </button>
             </div>
-            {showCalendar && (
+            {showCalendar && typeof window !== 'undefined' && createPortal(
                 <div 
-                    className="absolute z-50 w-full left-0 bottom-full mb-2"
-                    style={{ width: dateInputRef.current?.offsetWidth || '100%' }}
+                    data-calendar-portal
+                    className="fixed z-[9999] bg-white rounded-2xl shadow-lg border border-[#E5E7EB]"
+                    style={{
+                        top: `${calendarPosition.top}px`,
+                        left: `${calendarPosition.left}px`,
+                        width: `${calendarPosition.width}px`
+                    }}
+                    onClick={(e) => e.stopPropagation()}
                 >
                     <Calendar
                         selectedDate={value}
                         onDateSelect={handleDateSelect}
                         datesWithEvents={[]}
                     />
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );

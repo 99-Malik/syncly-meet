@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 
 export const NavBar: React.FC = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -88,7 +89,7 @@ export const NavBar: React.FC = () => {
         {showUserMenu && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
             <a href="#" className="block px-4 py-2 text-sm text-[#171717] hover:bg-gray-100 font-degular">Profile</a>
-            <a href="#" className="block px-4 py-2 text-sm text-[#171717] hover:bg-gray-100 font-degular">Settings</a>
+            <Link href="/settings" onClick={() => setShowUserMenu(false)} className="block px-4 py-2 text-sm text-[#171717] hover:bg-gray-100 font-degular">Settings</Link>
             <a href="#" className="block px-4 py-2 text-sm text-red-500 hover:bg-red-50 font-degular">Logout</a>
           </div>
         )}

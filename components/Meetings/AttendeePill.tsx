@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 
 interface AttendeePillProps {
     id: string;
@@ -11,21 +11,25 @@ interface AttendeePillProps {
 
 export const AttendeePill: React.FC<AttendeePillProps> = ({ id, email, avatar, onRemove }) => {
     const clipPathId = useMemo(() => `clip_attendee_${id}`, [id]);
+    const [imageError, setImageError] = useState(false);
 
     return (
         <div className="flex items-center gap-2 px-3 py-2 bg-[#f8f8fc] border border-[#E5E7EB] rounded-xl ">
             <div 
-                className="w-8 h-8 rounded-full overflow-hidden bg-[#3eace2]"
+                className="w-8 h-8 rounded-full overflow-hidden bg-[#3eace2] flex items-center justify-center"
                 style={{ borderWidth: '4px', borderColor: '#FFFFFF', borderStyle: 'solid' }}
             >
-                {avatar ? (
+                {avatar && !imageError ? (
                     <img
                         src={avatar}
                         alt={email}
                         className="w-full h-full object-cover"
+                        onError={() => setImageError(true)}
                     />
                 ) : (
-                    <div className="w-full h-full bg-[#3eace2]" />
+                    <span className="text-white font-degular text-xs">
+                        {email.charAt(0).toUpperCase()}
+                    </span>
                 )}
             </div>
             <span className="text-sm text-gray-900">

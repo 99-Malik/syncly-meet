@@ -24,12 +24,16 @@ export const GroupMenu: React.FC<GroupMenuProps> = ({ onEdit, onDelete }) => {
     setShowDeleteModal(false);
   };
 
+  const handleEditClick = () => {
+    onEdit?.();
+  };
+
   return (
     <>
       <div className="bg-white rounded-2xl border border-[#E5E7EB] py-2 z-100 min-w-[200px]">
         {/* Edit Group */}
         <button
-          onClick={onEdit}
+          onClick={handleEditClick}
           className="w-full flex items-center gap-2 px-5 py-2 text-[#222222] cursor-pointer font-degular"
           style={{
             fontSize: '16px',
