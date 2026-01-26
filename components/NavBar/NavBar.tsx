@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { LogoutModal } from "../SideBar/LogoutModal";
 
 export const NavBar: React.FC = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -90,10 +92,32 @@ export const NavBar: React.FC = () => {
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
             <a href="#" className="block px-4 py-2 text-sm text-[#171717] hover:bg-gray-100 font-degular">Profile</a>
             <Link href="/settings" onClick={() => setShowUserMenu(false)} className="block px-4 py-2 text-sm text-[#171717] hover:bg-gray-100 font-degular">Settings</Link>
-            <a href="#" className="block px-4 py-2 text-sm text-red-500 hover:bg-red-50 font-degular">Logout</a>
+            <button
+              onClick={() => {
+                setShowUserMenu(false);
+                setShowLogoutModal(true);
+              }}
+              className="w-full text-left block px-4 py-2 text-sm text-red-500 hover:bg-red-50 font-degular"
+            >
+              Logout
+            </button>
           </div>
         )}
       </div>
+
+      {/* Logout Modal */}
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onCancel={() => setShowLogoutModal(false)}
+        onConfirm={() => {
+          // Handle logout logic here (e.g., clear session, redirect to login)
+          console.log("User logged out");
+          // You can add redirect logic here:
+          // window.location.href = "/login";
+          setShowLogoutModal(false);
+        }}
+      />
     </div>
   );
 };

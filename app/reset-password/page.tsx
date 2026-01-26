@@ -28,7 +28,7 @@ const ResetPasswordPage = () => {
         />
 
         {/* Form */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           {/* Email Display */}
           <div className="text-center">
             <a 
@@ -48,7 +48,7 @@ const ResetPasswordPage = () => {
           <LoginButton text="Check Inbox" textColor="#0F1113" onClick={handleCheckInbox} />
 
           {/* Back Link */}
-          <div className="pt-2">
+          <div>
             <Link
               href="/forgot-password"
               className="flex items-center gap-2 text-[#171717] hover:text-[#3eace2] transition-colors justify-center cursor-pointer"

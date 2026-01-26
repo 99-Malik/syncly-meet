@@ -132,7 +132,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-6">
       <div className="flex items-start gap-4">
         {/* Icon Container - Left side */}
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
             <div className="w-6 h-6 flex items-center justify-center">
               {icon}
@@ -141,11 +141,11 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
         </div>
 
         {/* Right side - Title and Content containers stacked vertically */}
-        <div className="flex-1 min-w-0 space-y-2 bg-white border border-[#E5E7EB] rounded-xl px-4 pt-4 pb-8">
+        <div className="flex-1 min-w-0 space-y-2 bg-white border border-[#E5E7EB] rounded-xl px-4 pt-4 pb-8 overflow-hidden">
           {/* Title in white container - Parallel to icon */}
           <div className={showViewAvailability ? 'mb-4' : ''}>
             <h3
-              className="text-[#171717] font-hyperspace"
+              className="text-[#171717] font-degular"
               style={{
                 fontSize: "16px",
                 fontWeight: 700,
@@ -157,13 +157,13 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
           </div>
 
           {/* Content Container - Below title container, aligned with title */}
-          <div className={`bg-white rounded-xl ${showViewAvailability ? 'border border-[#E5E7EB] px-4 pb-8 pt-4' : ''}`}>
+          <div className={`bg-white rounded-xl overflow-hidden ${showViewAvailability ? 'border border-[#E5E7EB] px-4 pb-8 pt-4' : ''}`}>
             {type === "meeting" && (
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col lg:flex-row lg:items-center gap-4 min-w-0">
                 {/* Left side - Syncmeet Badge + Meeting Details */}
                 <div className="flex items-center gap-4 flex-1 min-w-0">
                   {/* Syncmeet Badge */}
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-[#f8f8fc] border-2 border-[#E5E7EB]">
                       <LogoIcon width={20} height={20} />
                       <span
@@ -206,21 +206,21 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
                 </div>
 
                 {/* Right side - Attendees and optional button */}
-                <div className="flex items-center gap-4 flex-shrink-0">
+                <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-wrap">
                   {renderAvatarsAndCount(attendeeCount, "Attendees")}
 
                   {/* View Availability Button - Conditionally shown */}
                   {showViewAvailability && (
                     <button
                       onClick={onViewAvailability}
-                      className="px-5 py-2.5 bg-[#0F1113] text-white rounded-lg font-degular hover:bg-gray-800 transition-colors flex-shrink-0"
+                      className="px-2 sm:px-4 lg:px-5 py-2.5 bg-[#0F1113] text-white rounded-lg font-degular hover:bg-gray-800 transition-colors text-xs sm:text-sm"
                       style={{
-                        fontSize: "14px",
                         fontWeight: 500,
                         lineHeight: "20px",
                       }}
                     >
-                      View Availability
+                      <span className="hidden sm:inline">View Availability</span>
+                      <span className="sm:hidden">View</span>
                     </button>
                   )}
                 </div>
@@ -228,11 +228,11 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             )}
 
             {type === "group" && (
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col lg:flex-row lg:items-center gap-4 min-w-0">
                 {/* Left side - Group Initials Badge + Details */}
-                <div className="flex items-center gap-4 flex-shrink-0">
+                <div className="flex items-center gap-4 flex-1 min-w-0">
                   {/* Group Initials Badge */}
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <div
                       className="w-12 h-12 rounded-xl flex items-center justify-center"
                       style={{ backgroundColor: groupBgColor }}
@@ -276,21 +276,21 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
                 </div>
 
                 {/* Right side - Avatars, Members count, and optional button */}
-                <div className="flex items-center gap-4 flex-shrink-0">
+                <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-wrap">
                   {renderAvatarsAndCount(memberCount, "Members")}
 
                   {/* View Availability Button - Conditionally shown */}
                   {showViewAvailability && (
                     <button
                       onClick={onViewAvailability}
-                      className="px-5 py-2.5 bg-[#0F1113] text-white rounded-lg font-degular hover:bg-gray-800 transition-colors flex-shrink-0"
+                      className="px-2 sm:px-4 lg:px-5 py-2.5 bg-[#0F1113] text-white rounded-lg font-degular hover:bg-gray-800 transition-colors text-xs sm:text-sm"
                       style={{
-                        fontSize: "14px",
                         fontWeight: 500,
                         lineHeight: "20px",
                       }}
                     >
-                      View Availability
+                      <span className="hidden sm:inline">View Availability</span>
+                      <span className="sm:hidden">View</span>
                     </button>
                   )}
                 </div>

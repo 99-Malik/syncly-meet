@@ -61,7 +61,7 @@ const Home = () => {
                     {/* Group Notification - With View Availability Button */}
                     <NotificationCard
                         icon={<LogoIcon width={24} height={24} />}
-                        title="New Group created successfully!"
+                        title="New Group created successfully !"
                         type="group"
                         groupName="AI Testing Group"
                         groupDescription="Developer Group, includes all the front end developers in this group"

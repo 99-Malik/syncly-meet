@@ -26,7 +26,7 @@ const ForgotPasswordPage = () => {
                 />
 
                 {/* Form */}
-                <div className="space-y-4">
+                <div className="space-y-6">
                     {/* Email Field */}
                     <InputField
                         label="Email"
@@ -40,7 +40,7 @@ const ForgotPasswordPage = () => {
                     <LoginButton text="Get Reset Link" onClick={() => router.push('/reset-password')} />
 
                     {/* Back Link */}
-                    <div className="pt-2">
+                    <div >
                         <Link
                             href="/"
                             className="flex items-center gap-2 text-[#171717] hover:text-[#3eace2] transition-colors justify-center cursor-pointer"

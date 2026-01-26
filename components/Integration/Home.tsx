@@ -37,7 +37,7 @@ const IntegrationHome = () => {
         <DashboardLayout>
             <Header title="Integration" breadcrumb="Integration / Home" />
 
-            <div className="mt-6 px-6 pt-4 pb-12 bg-white border border-[#E5E7EB] rounded-2xl">
+            <div className="mt-6 px-6 pt-4 h-auto pb-8 bg-white border border-[#E5E7EB] rounded-2xl">
                 <p className="text-[#171717] font-hyperspace mb-4" style={{
                     fontSize: '20px',
                     fontWeight: 600,

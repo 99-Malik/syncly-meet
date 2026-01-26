@@ -66,18 +66,17 @@ export const AvailableSlots: React.FC<AvailableSlotsProps> = ({
       </div>
 
       {/* Slots Grid */}
-      <div className="grid grid-cols-2 gap-3 p-4" style={{ gap: '12px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4" style={{ gap: '12px' }}>
         {slots.map((slot, index) => (
           <button
             key={index}
             onClick={() => handleSlotClick(slot)}
-            className={`font-medium font-degular transition-colors ${
+            className={`w-full font-medium font-degular transition-colors ${
               selected.includes(slot)
                 ? 'bg-[#3eace2] text-white border-[#3eace2]'
                 : 'bg-[#F8F8FC] text-[#171717] border-[#E5E7EB] hover:border-[#3eace2]'
             }`}
             style={{
-              width: '164px',
               height: '44px',
               paddingTop: '12px',
               paddingRight: '16px',

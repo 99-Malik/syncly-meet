@@ -114,7 +114,7 @@ const Home = () => {
               <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center ">
-              <span className="px-4 text-sm text-[#171717]/60 bg-[#f8f8fc]">
+              <span className="px-4 text-sm text-[#171717]/60 bg-[#f5f6f6]">
                 Or Sign in with
               </span>
             </div>

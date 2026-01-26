@@ -28,7 +28,7 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
             onClick={onClose}
         >
             <div
-                className="bg-white rounded-2xl p-8 max-w-lg w-full relative"
+                className="bg-white rounded-2xl p-8 max-w-xl w-full relative"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Close Button */}

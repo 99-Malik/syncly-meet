@@ -33,7 +33,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
 
   return (
     <button 
-      className={`w-full bg-primary py-4 rounded-2xl font-base text-base cursor-pointer transition-colors mt-2 ${className}`}
+      className={`w-full bg-primary py-4 font-hyperspace rounded-2xl font-base text-base cursor-pointer transition-colors mt-2 ${className}`}
       style={{ color: textColor }}
       onClick={handleClick}
     >

@@ -144,7 +144,7 @@ export const DashboardHome: React.FC = () => {
             <Header title="Dashboard" breadcrumb="Dashboard / Home" />
 
             {/* Stat Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
                 <StatCard
                     icon={
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -192,7 +192,7 @@ export const DashboardHome: React.FC = () => {
             </div>
 
             {/* Upcoming Meetings Table */}
-            <div className="mb-8">
+            <div className="mb-4">
                 <MeetingsTable meetings={meetings} />
             </div>
 
